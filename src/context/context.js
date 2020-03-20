@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {linkData} from './linkData';
 import {socialData} from './socialData';
-import {items} from './productData';
+//import {items} from './productData';
 import {client} from './contentful';
 
 const ProductContext = React.createContext();
@@ -23,34 +23,32 @@ class ProductProvider extends Component {
         featuredProducts: [],
         singleProduct: {},
         loading: true,
-        search: '',
+        search: "",
         price: 0,
         min: 0,
         max: 0,
-        company: 'all',
+        company: "all",
         shipping: false
     }
 
     componentDidMount() {
 
-        // from contentful items 
         client
         .getEntries({
             content_type: "techStore"
             })
         .then(response => this.setProducts(response.items))
         .catch(console.error)
-        //this.setProducts(items);
+        
     };
 
     // ############ setProducts
 
-    setProducts = (products) => {
+    setProducts = products => {
         let storeProducts = products.map(item => {
-
             const {id} = item.sys;
             const image = item.fields.image.fields.file.url;
-            const product = {id, ...item.fields, image};
+            const product = { id, ...item.fields, image };
             return product
         })
 
