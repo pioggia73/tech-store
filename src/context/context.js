@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {linkData} from './linkData';
 import {socialData} from './socialData';
 import {items} from './productData';
+import {client} from './contentful';
 
 const ProductContext = React.createContext();
 
@@ -31,7 +32,15 @@ class ProductProvider extends Component {
     }
 
     componentDidMount() {
-        this.setProducts(items);
+
+        // from contentful items 
+        client
+        .getEntries({
+            content_type: "techStore"
+            })
+        .then(response => this.setProducts(response.items))
+        .catch(console.error)
+        //this.setProducts(items);
     };
 
     // ############ setProducts
@@ -263,9 +272,17 @@ class ProductProvider extends Component {
     };
 
     sortData = () => {
-        const {storeProducts, price, company, shipping, search} = this.state
-        let tempPrice = parseInt(price);
+        const {
+            storeProducts, 
+            searchPrice, 
+            company, 
+            shipping, 
+            search
+        } = this.state
+
         let tempProducts = [...storeProducts];
+        let tempPrice = parseFloat(searchPrice);
+        
         // ###### filtering based on company
         if(company !== 'all') {
             tempProducts = tempProducts.filter(item => item.company === company)
@@ -285,8 +302,6 @@ class ProductProvider extends Component {
                 }
             })
         }
-
-
 
         this.setState({
             filteredProducts: tempProducts

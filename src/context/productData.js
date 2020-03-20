@@ -101,7 +101,7 @@ export const items = [
     sys: { id: 7 },
 
     fields: {
-      title: "canon Eos 30 photo camera",
+      title: "fuji X100s photo camera",
       price: 120,
       company: "canon",
       description:
